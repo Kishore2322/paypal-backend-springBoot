@@ -1,0 +1,78 @@
+
+
+.idea
+
+# =========================================
+# Java / Spring Boot
+# =========================================
+target/
+build/
+*.class
+*.jar
+*.war
+
+# =========================================
+# Maven
+# =========================================
+.mvn/
+!/.mvn/wrapper/maven-wrapper.jar
+**/target/
+
+# =========================================
+# IntelliJ / IDE
+# =========================================
+.idea/
+*.iml
+out/
+
+# =========================================
+# Logs & temp
+# =========================================
+*.log
+logs/
+tmp/
+temp/
+
+# =========================================
+# OS / System files
+# =========================================
+.DS_Store
+Thumbs.db
+
+# =========================================
+# Spring / Env Files
+# =========================================
+# Ignore local or sensitive configs
+*.env
+.env
+application-local.yml
+application-dev.yml
+application-prod.yml
+*.keystore
+*.jks
+
+# Keep generic config files in Git
+!application.yml
+!application.properties
+
+# =========================================
+# Docker
+# =========================================
+# Keep main docker-compose.yml (important for running the project)
+!docker-compose.yml
+
+# Ignore local or override compose files
+docker-compose.override.yml
+docker-compose.*.yml
+*.pid
+
+# =========================================
+# Others
+# =========================================
+# IntelliJ project metadata
+*.ipr
+*.iws
+
+# Optional: any service-specific temp directories
+user-service/tmp/
+transaction-service/tmp/
