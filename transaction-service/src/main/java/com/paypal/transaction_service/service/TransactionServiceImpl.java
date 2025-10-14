@@ -13,13 +13,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService{
 
     private final TransactionRepository transactionRepository;
 
     private final ObjectMapper objectMapper;
     private final KafkaEventProducer kafkaEventProducer;
+
+    public TransactionServiceImpl(TransactionRepository transactionRepository, ObjectMapper objectMapper, KafkaEventProducer kafkaEventProducer) {
+        this.transactionRepository = transactionRepository;
+        this.objectMapper = objectMapper;
+        this.kafkaEventProducer = kafkaEventProducer;
+    }
+
     @Autowired
     private RestTemplate restTemplate;
 
