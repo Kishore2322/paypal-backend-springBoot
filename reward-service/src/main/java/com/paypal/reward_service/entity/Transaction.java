@@ -1,8 +1,8 @@
-package com.paypal.notification_service.Entity;
+package com.paypal.reward_service.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "Transaction")
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Table(name = "Transactions")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -27,9 +26,7 @@ public class Transaction {
     @Column(nullable = false)
     private Long receiverId;
 
-
     @Column(nullable = false)
-    @Positive(message = "Amount must be positive")
     private Double amount;
 
     @Column(nullable = false)
@@ -37,6 +34,49 @@ public class Transaction {
 
     @Column(nullable = false)
     private String status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSenderId() {
+        return senderId;
+    }
+    public void setSenderId(Long senderId) {
+        this.senderId = senderId;
+    }
+
+    public Long getReceiverId() {
+        return receiverId;
+    }
+    public void setReceiverId(Long receiverId) {
+        this.receiverId = receiverId;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @PrePersist
     public void prePersist() {
