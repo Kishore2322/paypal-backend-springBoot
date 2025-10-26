@@ -36,6 +36,7 @@
         <module>notification-service</module>
         <module>reward-service</module>
         <module>api-gateway</module>
+        <module>wallet-service</module>
         <!--        Adding other modules-->
     </modules>
 
@@ -54,6 +55,12 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
