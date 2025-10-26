@@ -35,6 +35,7 @@
         <module>transaction-service</module>
         <module>notification-service</module>
         <module>reward-service</module>
+        <module>api-gateway</module>
         <!--        Adding other modules-->
     </modules>
 
