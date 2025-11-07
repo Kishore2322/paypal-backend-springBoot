@@ -15,21 +15,18 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
 
-        # 🔐 User Auth (Signup/Login)
         # user microservice - NO rate limiting for auth endpoints
         - id: user-service
           uri: http://localhost:3030
           predicates:
             - Path=/auth/**
 
-        # 👤 User Service (Get user info, etc.)
         # user microservice - NO rate limiting for auth endpoints
         - id: user-service
           uri: http://localhost:3030
           predicates:
             - Path=/api/users/**
 
-        # 💸 Transaction Service
         # Transaction microservice - WITH rate limiting
         - id: transaction-service
           uri: http://localhost:8082
@@ -42,7 +39,6 @@ spring:
                 redis-rate-limiter.burstCapacity: 20
                 redis-rate-limiter.requestedTokens: 1
 
-        # 🎁 Reward Service
         # Reward microService - WITH rate limiting
         - id: reward-service
           uri: http://localhost:8085
@@ -76,10 +72,8 @@ spring:
           args:
             maxSize: 1MB
 
-
   jwt:
     secret: my-super-secret-key-that-you-never-share
-
 
 logging:
   level:

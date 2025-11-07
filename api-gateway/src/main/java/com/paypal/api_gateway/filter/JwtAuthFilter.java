@@ -29,12 +29,9 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         System.out.println("📦 Normalized path: " + normalizedPath);
 
         // Skip JWT check for public paths
-        if (PUBLIC_PATHS.contains(normalizedPath)) {
-            System.out.println("🟢 Skipping JWT for public path: " + normalizedPath);
-            return chain.filter(exchange)
-                    .doOnSubscribe(s -> System.out.println("➡️ Proceeding without JWT for public path"))
-                    .doOnSuccess(v -> System.out.println("✅ Successfully passed public path without JWT"))
-                    .doOnError(e -> System.err.println("❌ Error during public path filter chain: " + e.getMessage()));
+        if (PUBLIC_PATHS.contains(normalizedPath) || normalizedPath.startsWith("/auth/")) {
+            System.out.println("Public path, skipping auth check: " + normalizedPath);
+            return chain.filter(exchange);
         }
 
         // Extract Authorization header once
@@ -50,16 +47,22 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         try {
             String token = authHeader.substring(7);
             Claims claims = JwtUtil.validateToken(token);
-            exchange.getRequest().mutate()
-                    .header("X-User-Email", claims.getSubject())
-                    .header("X-User-Id", claims.get("userId", String.class))
-                    .header("X-User-Role", claims.get("role", String.class))
+
+            System.out.println("✅ Token validated. Claims:");
+            System.out.println("   userId=" + claims.get("userId"));
+            System.out.println("   email=" + claims.getSubject());
+            System.out.println("   role=" + claims.get("role"));
+
+            // Mutate request with claims
+            ServerWebExchange mutatedExchange = exchange.mutate()
+                    .request(exchange.getRequest().mutate()
+                            .header("X-User-Email", claims.getSubject())
+                            .header("X-User-Id", String.valueOf(claims.get("userId")))
+                            .header("X-User-Role", (String) claims.get("role"))
+                            .build())
                     .build();
 
-            return chain.filter(exchange)
-                    .doOnSubscribe(s -> System.out.println("➡️ Proceeding without JWT for public path"))
-                    .doOnSuccess(v -> System.out.println("✅ Successfully passed public path without JWT"))
-                    .doOnError(e -> System.err.println("❌ Error during public path filter chain: " + e.getMessage()));
+            return chain.filter(mutatedExchange);
         } catch (Exception e) {
             System.out.println("❌ JWT validation failed: " + e.getMessage());
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
